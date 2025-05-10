@@ -171,9 +171,9 @@ function register_block_script_module_id( $metadata, $field_name, $index = 0 ) {
 	$module_uri       = get_block_asset_url( $module_path_norm );
 
 	$module_asset        = ! empty( $module_asset_path ) ? require $module_asset_path : array();
-	$module_dependencies = isset( $module_asset['dependencies'] ) ? $module_asset['dependencies'] : array();
-	$block_version       = isset( $metadata['version'] ) ? $metadata['version'] : false;
-	$module_version      = isset( $module_asset['version'] ) ? $module_asset['version'] : $block_version;
+	$module_dependencies = $module_asset['dependencies'] ?? array();
+	$block_version       = $metadata['version'] ?? false;
+	$module_version      = $module_asset['version'] ?? $block_version;
 
 	wp_register_script_module(
 		$module_id,
@@ -237,9 +237,9 @@ function register_block_script_handle( $metadata, $field_name, $index = 0 ) {
 
 	$script_path_norm    = wp_normalize_path( realpath( $path . '/' . $script_path ) );
 	$script_uri          = get_block_asset_url( $script_path_norm );
-	$script_dependencies = isset( $script_asset['dependencies'] ) ? $script_asset['dependencies'] : array();
-	$block_version       = isset( $metadata['version'] ) ? $metadata['version'] : false;
-	$script_version      = isset( $script_asset['version'] ) ? $script_asset['version'] : $block_version;
+	$script_dependencies = $script_asset['dependencies'] ?? array();
+	$block_version       = $metadata['version'] ?? false;
+	$script_version      = $script_asset['version'] ?? $block_version;
 	$script_args         = array();
 	if ( 'viewScript' === $field_name && $script_uri ) {
 		$script_args['strategy'] = 'defer';
@@ -1798,7 +1798,7 @@ function traverse_and_serialize_block( $block, $pre_callback = null, $post_callb
 			}
 
 			$block_content .= traverse_and_serialize_block( $inner_block, $pre_callback, $post_callback );
-			$block_content .= isset( $post_markup ) ? $post_markup : '';
+			$block_content .= $post_markup ?? '';
 
 			++$block_index;
 		}
@@ -1955,10 +1955,12 @@ function traverse_and_serialize_blocks( $blocks, $pre_callback = null, $post_cal
 				$post_callback,
 				array( &$block, &$parent_block, $next )
 			);
+		} else {
+			$post_markup = '';
 		}
 
 		$result .= traverse_and_serialize_block( $block, $pre_callback, $post_callback );
-		$result .= isset( $post_markup ) ? $post_markup : '';
+		$result .= $post_markup ?? '';
 	}
 
 	return $result;
@@ -2541,7 +2543,7 @@ function wp_migrate_old_typography_shape( $metadata ) {
 	);
 
 	foreach ( $typography_keys as $typography_key ) {
-		$support_for_key = isset( $metadata['supports'][ $typography_key ] ) ? $metadata['supports'][ $typography_key ] : null;
+		$support_for_key = $metadata['supports'][ $typography_key ] ?? null;
 
 		if ( null !== $support_for_key ) {
 			_doing_it_wrong(

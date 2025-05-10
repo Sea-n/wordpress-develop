@@ -209,7 +209,7 @@ class WP_Duotone {
 			'rad'  => 360 / ( M_PI * 2 ),
 		);
 
-		$factor = isset( $angle_units[ $unit ] ) ? $angle_units[ $unit ] : 1;
+		$factor = $angle_units[ $unit ] ?? 1;
 
 		return (float) $value * $factor;
 	}
@@ -1003,7 +1003,7 @@ class WP_Duotone {
 		}
 		// Get the per block settings from the theme.json.
 		$tree              = wp_get_global_settings();
-		$presets_by_origin = isset( $tree['color']['duotone'] ) ? $tree['color']['duotone'] : array();
+		$presets_by_origin = $tree['color']['duotone'] ?? array();
 
 		self::$global_styles_presets = array();
 		foreach ( $presets_by_origin as $presets ) {

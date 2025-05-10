@@ -944,7 +944,7 @@ function rest_filter_response_fields( $response, $server, $request ) {
 				// Skip any sub-properties if their parent prop is already marked for inclusion.
 				break 2;
 			}
-			$ref[ $next ] = isset( $ref[ $next ] ) ? $ref[ $next ] : array();
+			$ref[ $next ] = $ref[ $next ] ?? array();
 			$ref          = &$ref[ $next ];
 		}
 		$last         = array_shift( $parts );
@@ -3080,7 +3080,7 @@ function rest_filter_response_by_context( $response_data, $schema, $context ) {
 		$check = array();
 
 		if ( $is_array_type ) {
-			$check = isset( $schema['items'] ) ? $schema['items'] : array();
+			$check = $schema['items'] ?? array();
 		} elseif ( $is_object_type ) {
 			if ( isset( $schema['properties'][ $key ] ) ) {
 				$check = $schema['properties'][ $key ];

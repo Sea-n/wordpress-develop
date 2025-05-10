@@ -294,7 +294,7 @@ class WP_Scripts extends WP_Dependencies {
 		$intended_strategy     = (string) $this->get_data( $handle, 'strategy' );
 		$ie_conditional_prefix = '';
 		$ie_conditional_suffix = '';
-		$conditional           = isset( $obj->extra['conditional'] ) ? $obj->extra['conditional'] : '';
+		$conditional           = $obj->extra['conditional'] ?? '';
 
 		if ( ! $this->is_delayed_strategy( $intended_strategy ) ) {
 			$intended_strategy = '';
